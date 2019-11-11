@@ -1,0 +1,32 @@
+{
+  "name": "mongoose-pagination",
+  "version": "1.0.0",
+  "description": "It is used to paginate the bulk of results.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "nodejs",
+    "page",
+    "paginate",
+    "pagination",
+    "shirnk",
+    "mongoose-paginate",
+    "mongoose-pagination",
+    "pagination-mongoose",
+    "paginationmongoose",
+    "mongoosepagination",
+    "pagination mongoose",
+    "mongoose pagination",
+    "mongoose",
+    "mongodb"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxmari/mongoose-pagination.git"
+  },
+  "author": "Mariselvam",
+  "license": "ISC"
+}
