@@ -1,6 +1,6 @@
 {
-  "name": "mongoose-pagination",
-  "version": "1.0.0",
+  "name": "mongoose-infinite-pagination",
+  "version": "1.0.1",
   "description": "It is used to paginate the bulk of results.",
   "main": "index.js",
   "scripts": {
@@ -21,11 +21,12 @@
     "pagination mongoose",
     "mongoose pagination",
     "mongoose",
-    "mongodb"
+    "mongodb",
+    "infinite"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dxmari/mongoose-pagination.git"
+    "url": "git+https://github.com/dxmari/mongoose-infinite-pagination.git"
   },
   "author": "Mariselvam",
   "license": "ISC"
