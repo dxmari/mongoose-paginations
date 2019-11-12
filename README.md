@@ -17,7 +17,6 @@ npm install mongoose-infinite-pagination
 ```
 
 ## Usage
-### Installation
 Add plugin to a schema and then use model `findWithPaginate` method:
 
 ```js
@@ -64,7 +63,7 @@ Model.findWithPaginate({}, {req : req, skip: 5, limit: 10 }, function(err, resul
 });
 ```
 
-### Skip 5 documents and return upto 10 documents with select & populate:
+#### Skip 5 documents and return upto 10 documents with select & populate:
 
 ```js
 Model
@@ -77,9 +76,9 @@ Model
   // result.previous
 });
 ```
-### Note : Please use paginateSelect() & paginatePopulate() before findWithPaginate() otherwise it will not work.
+#### Note : Please use paginateSelect() & paginatePopulate() before findWithPaginate() otherwise it will not work.
 
-### With promise:
+#### With promise:
 
 ```js
 Model.findWithPaginate({}, {req : req, skip: 3, limit: 10 }).then(function(result) {
@@ -122,7 +121,7 @@ Model.aggregatePaginate({}, {req : req, skip: 5, limit: 10 }, function(err, resu
 });
 ```
 
-### With promise:
+#### With promise:
 
 ```js
 Model.aggregatePaginate({}, {req : req, skip: 3, limit: 10 }).then(function(result) {
