@@ -1,6 +1,6 @@
 {
   "name": "mongoose-infinite-pagination",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "It is used to paginate the bulk datas.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,6 @@
     "page",
     "paginate",
     "pagination",
-    "shirnk",
     "mongoose-paginate",
     "mongoose-pagination",
     "pagination-mongoose",
@@ -22,7 +21,11 @@
     "mongoose pagination",
     "mongoose",
     "mongodb",
-    "infinite"
+    "infinite",
+    "mongoose-infinite-pagination",
+    "mongoose-pagination-infinite",
+    "infinite-pagination",
+    "pagination-infinite"
   ],
   "repository": {
     "type": "git",
