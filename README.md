@@ -1,7 +1,7 @@
 
 # mongoose-infinite-pagination
 
-> Pagination plugin for [Mongoose](http://mongoosejs.com)
+> Pagination plugin for [Mongoose](http://mongoosejs.com) & [expressJS](https://expressjs.com/) and It is used to paginate the bulk datas.
 
 [![NPM version](https://img.shields.io/npm/v/mongoose-infinite-pagination.svg)](https://npmjs.org/package/mongoose-infinite-pagination)
 [![Build status](https://img.shields.io/travis/edwardhotchkiss/mongoose-infinite-pagination.svg)](https://travis-ci.org/edwardhotchkiss/mongoose-infinite-pagination)
@@ -18,7 +18,7 @@ npm install mongoose-infinite-pagination
 
 ## Usage
 
-Add plugin to a schema and then use model `paginate` method:
+Add plugin to a schema and then use model `aggregatePaginate` method:
 
 ```js
 var mongoose = require('mongoose');
@@ -34,7 +34,7 @@ var Model = mongoose.model('Model',  schema);
 
 **Parameters**
 
-* `[pipelines]` {Object} - Query criteria. [Documentation](https://docs.mongodb.org/manual/tutorial/query-documents)
+* `[pipelines]` {Object} - Aggregate Pipeline criteria. [Documentation](https://docs.mongodb.com/manual/core/aggregation-pipeline/)
 * `[options]` {Object}
   - `[req]` {URL request} - Use `req` to set get the url for next set of results & get the url for previous set of results.
   - `[skip=0]` {Number} - Use `skip` to set skip position.
@@ -51,10 +51,10 @@ Promise fulfilled with object having properties:
 
 ### Examples
 
-#### Skip 20 documents and return 10 documents
+#### Skip 5 documents and return upto 10 documents
 
 ```js
-Model.aggregatePaginate({}, {req : req, skip: 3, limit: 10 }, function(err, result) {
+Model.aggregatePaginate({}, {req : req, skip: 5, limit: 10 }, function(err, result) {
   // result.results
   // result.count
   // result.next
@@ -65,7 +65,7 @@ Model.aggregatePaginate({}, {req : req, skip: 3, limit: 10 }, function(err, resu
 With promise:
 
 ```js
-Model.paginate({}, {req : req, skip: 3, limit: 10 }).then(function(result) {
+Model.aggregatePaginate({}, {req : req, skip: 3, limit: 10 }).then(function(result) {
   // ...
 }).catch(err =>{
   // ...
@@ -88,7 +88,7 @@ mongooseInfinitePaginate.paginate.options = {
 controller.js:
 
 ```js
-Model.paginate().then(function(result) {
+Model.aggregatePaginate().then(function(result) {
   // result.docs - array of objects
   // result.limit - 10
   // result.skip - 0
