@@ -3,21 +3,12 @@ const getUrls = (opts) => {
     let skip = opts.skip;
     let url = opts.url;
     let itemCount = opts.count;
-    if (url.indexOf('limit=') == -1) {
-        if (url.indexOf('?') == -1) {
-            url += '?limit=' + limit;
-        } else {
-            url += '&limit=' + limit;
-        }
-    }
 
-    if (url.indexOf('offset') == -1) {
-        if (url.indexOf('?') == -1) {
-            url += '?offset=' + skip;
-        } else {
-            url += '&offset=' + skip;
-        }
-    }
+    var parameters = getUrlParameters(url);
+
+    url = Object.keys(parameters).length == 0 ? url += '?limit=&offset=' : url;
+    url = parameters['limit'] ? url : url.replace('limit=', ('limit=' + limit));
+    url = parameters['offset'] ? url : url.replace('offset=', ('offset=' + skip));
 
     let next_url = null,
         prev_url = null;
@@ -40,6 +31,14 @@ const getUrls = (opts) => {
     return result;
 }
 
+const getUrlParameters = (url) => {
+    var vars = {};
+    var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
 function paginate(schema, opts) {
     opts = Object.assign({}, (paginate.options || {}), opts);
     let defaultLimit = (opts ? (opts.defaultLimit ? opts.defaultLimit : 10) : 10);
@@ -56,7 +55,15 @@ function paginate(schema, opts) {
                     count: 0
                 }
             }
-            let itemCount = await this.aggregate(pipelines).count('count');
+            let itemCount = 0;
+            try {
+                itemCount = await this.aggregate(pipelines).count('count');
+            } catch (err) {
+                if (callback) {
+                    callback(err, null);
+                }
+                return reject(err);
+            }
             if (itemCount && itemCount[0]) {
                 itemCount = itemCount[0].count;
             } else {
@@ -86,7 +93,7 @@ function paginate(schema, opts) {
                     }
                     if (err) return reject(err);
                     resolve(result);
-                });
+                })
         })
     }
 
