@@ -1,4 +1,3 @@
-
 const getUrls = (opts) => {
     let limit = opts.limit;
     let skip = opts.skip;
@@ -12,7 +11,7 @@ const getUrls = (opts) => {
         }
     }
 
-    if (url.indexOf('skip') == -1) {
+    if (url.indexOf('offset') == -1) {
         if (url.indexOf('?') == -1) {
             url += '?offset=' + skip;
         } else {
@@ -42,10 +41,11 @@ const getUrls = (opts) => {
 }
 
 function paginate(schema, opts) {
+    opts = Object.assign({}, (paginate.options || {}), opts);
     let defaultLimit = (opts ? (opts.defaultLimit ? opts.defaultLimit : 10) : 10);
     let defaultSkip = (opts ? (opts.defaultSkip ? opts.defaultSkip : 0) : 0)
     let result;
-    schema.statics.aggregatePaginate = function (query, options, callback) {
+    schema.statics.aggregatePaginate = function (pipelines, options, callback) {
         return new Promise(async (resolve, reject) => {
             let paginateOpts;
             if (options && options.req) {
@@ -56,15 +56,15 @@ function paginate(schema, opts) {
                     count: 0
                 }
             }
-            let itemCount = await this.aggregate(query).count('count');
+            let itemCount = await this.aggregate(pipelines).count('count');
             if (itemCount && itemCount[0]) {
                 itemCount = itemCount[0].count;
             } else {
                 itemCount = 0;
             }
             if (paginateOpts && paginateOpts.url) {
-                query.push({ '$skip': paginateOpts.skip })
-                query.push({ '$limit': paginateOpts.limit })
+                pipelines.push({ '$skip': paginateOpts.skip })
+                pipelines.push({ '$limit': paginateOpts.limit })
             }
             paginateOpts.count = itemCount;
             result = getUrls(paginateOpts);
@@ -75,10 +75,10 @@ function paginate(schema, opts) {
                 return resolve(result);
             }
             this
-                .aggregate(query)
+                .aggregate(pipelines)
                 .exec((err, querySet) => {
+                    result.results = querySet;
                     if (callback) {
-                        result.results = querySet;
                         if (err) {
                             result = null;
                         }
@@ -89,5 +89,51 @@ function paginate(schema, opts) {
                 });
         })
     }
+
+    class Paginate {
+        static findWithPaginate(query, options, callback) {
+            return new Promise(async (resolve, reject) => {
+                let paginateOpts;
+                if (options && options.req) {
+                    paginateOpts = {
+                        url: options.req.protocol + `${options.is_secure ? 's' : ''}://` + options.req.get('host') + options.req.originalUrl,
+                        limit: parseInt(options.limit || defaultLimit),
+                        skip: parseInt(options.skip || defaultSkip),
+                        count: 0
+                    }
+                }
+                let itemCount = await this.countDocuments(query);
+                paginateOpts.count = itemCount;
+                result = getUrls(paginateOpts);
+
+                this
+                    .find(query)
+                    .select(this.selectOpts)
+                    .populate(this.populateOpts)
+                    .skip(paginateOpts.skip)
+                    .limit(paginateOpts.limit)
+                    .exec((err, querySet) => {
+                        result.results = querySet;
+                        if (callback) {
+                            if (err) {
+                                result = null;
+                            }
+                            callback(err, result);
+                        }
+                        if (err) return reject(err);
+                        resolve(result);
+                    });
+            });
+        }
+        static paginateSelect(opts) {
+            this.selectOpts = opts;
+            return this;
+        }
+        static paginatePopulate(opts) {
+            this.populateOpts = opts;
+            return this;
+        }
+    }
+    schema.loadClass(Paginate);
 };
 module.exports = paginate;
