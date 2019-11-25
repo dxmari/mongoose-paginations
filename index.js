@@ -117,6 +117,7 @@ function paginate(schema, opts) {
                     .find(query)
                     .select(this.selectOpts)
                     .populate(this.populateOpts)
+                    .sort(this.sortOpts)
                     .skip(paginateOpts.skip)
                     .limit(paginateOpts.limit)
                     .exec((err, querySet) => {
@@ -138,6 +139,10 @@ function paginate(schema, opts) {
         }
         static paginatePopulate(opts) {
             this.populateOpts = opts;
+            return this;
+        }
+        static paginateSort(opts) {
+            this.sortOpts = opts;
             return this;
         }
     }
