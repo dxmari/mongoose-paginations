@@ -69,6 +69,7 @@ Model.findWithPaginate({}, {req : req, skip: 5, limit: 10 }, function(err, resul
 Model
    .paginateSelect('name') // Select Options same as mongoose select();
    .paginatePopulate([populateOpts]) // Populate Options same as mongoose populate();
+   .paginateSort([sortOpts]) // Sort Options same as mongoose sort();
    .findWithPaginate({}, {req : req, skip: 5, limit: 10 }, function(err, result) {
   // result.results
   // result.count
@@ -76,7 +77,7 @@ Model
   // result.previous
 });
 ```
-#### Note : Please use paginateSelect() & paginatePopulate() before findWithPaginate() otherwise it will not work.
+#### Note : Please use paginateSelect() & paginatePopulate() & paginateSort() before findWithPaginate() otherwise it will not work.
 
 #### With promise:
 
@@ -150,6 +151,7 @@ controller.js:
 Model
     .paginateSelect('name mobile ...')
     .paginatePopulate({path : 'userprofile'})
+    .paginateSort({created : 1})
     .findWithPaginate(query).then(function(result) {
       // result.docs - array of objects
       // result.limit - 10
