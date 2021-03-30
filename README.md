@@ -1,19 +1,19 @@
 
-# mongoose-infinite-pagination
+# mongoose-paginations
 
 > Pagination plugin for [Mongoose](http://mongoosejs.com) & [expressJS](https://expressjs.com/) and It is used to paginate the bulk datas.
 
-[![NPM version](https://img.shields.io/npm/v/mongoose-infinite-pagination.svg)](https://npmjs.org/package/mongoose-infinite-pagination)
-[![Build status](https://img.shields.io/travis/edwardhotchkiss/mongoose-infinite-pagination.svg)](https://travis-ci.org/edwardhotchkiss/mongoose-infinite-pagination)
+[![NPM version](https://img.shields.io/npm/v/mongoose-paginations.svg)](https://npmjs.org/package/mongoose-paginations)
+[![Build status](https://img.shields.io/travis/edwardhotchkiss/mongoose-paginations.svg)](https://travis-ci.org/edwardhotchkiss/mongoose-paginations)
 
 **Note:** This plugin will only work with Node.js >= 4.2 and Mongoose >= 4.2
 =======
-[![NPM](https://nodei.co/npm/mongoose-infinite-pagination.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/mongoose-infinite-pagination/)
+[![NPM](https://nodei.co/npm/mongoose-paginations.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/mongoose-paginations/)
 
 ## Installation
 
 ```sh
-npm install mongoose-infinite-pagination
+npm install mongoose-paginations
 ```
 
 ## Usage
@@ -22,9 +22,9 @@ Add plugin to a schema and then use model `findWithPaginate` method:
 ```js
 const mongoose = require('mongoose');
 
-const { paginate } = require('mongoose-infinite-pagination');
+const { paginate } = require('mongoose-paginations');
 # OR
-const mongooseInfinitePaginate = require('mongoose-infinite-pagination');
+const mongooseInfinitePaginate = require('mongoose-paginations');
 
 var schema = new mongoose.Schema({ /* schema definition & fields */ });
 
@@ -145,7 +145,7 @@ Model.aggregatePaginate([{ <Pipelines Query> }, ...], {req : req, skip: 3, limit
 config.js:
 
 ```js
-var mongooseInfinitePaginate = require('mongoose-infinite-pagination');
+var mongooseInfinitePaginate = require('mongoose-paginations');
 
 mongooseInfinitePaginate.paginate.options = { 
   defaulLimit: 10,
