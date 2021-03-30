@@ -44,8 +44,10 @@ var Model = mongoose.model('Model',  schema);
 * `[query]` {Object} - Query criteria. [Documentation](https://docs.mongodb.org/manual/tutorial/query-documents)
 * `[options]` {Object}
   - `[req]` {URL request} - Use `req` to set get the url for next set of results & get the url for previous set of results.
-  - `[skip=0]` {Number} - Use `skip` to set skip position.
+  - `[page=2]` {Number} - Use `page` to get results based on page number (If use `page` option, then it will ignore the `skip` option).
   - `[limit=10]` {Number} - Use `limit` to set number of results to be obtain.
+  - `[skip=0]` {Number} - Use `skip` to set skip position.
+  - `[is_secure=true]` {Boolean} - Use `is_secure` to set the url as secure(convert http to https).
 * `[callback(err, result)]` - If specified the callback is called once pagination results are retrieved or when an error has occurred
 
 **Return value**
