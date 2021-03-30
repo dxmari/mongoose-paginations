@@ -20,11 +20,17 @@ npm install mongoose-infinite-pagination
 Add plugin to a schema and then use model `findWithPaginate` method:
 
 ```js
-var mongoose = require('mongoose');
-var mongooseInfinitePaginate = require('mongoose-infinite-pagination');
+const mongoose = require('mongoose');
+
+const { paginate } = require('mongoose-infinite-pagination');
+# OR
+const mongooseInfinitePaginate = require('mongoose-infinite-pagination');
 
 var schema = new mongoose.Schema({ /* schema definition & fields */ });
-schema.plugin(mongooseInfinitePaginate);
+
+schema.plugin(mongooseInfinitePaginate.paginate);
+# OR
+schema.plugin(paginate);
 
 var Model = mongoose.model('Model',  schema);
 ```
@@ -94,7 +100,7 @@ Model.findWithPaginate({}, {req : req, skip: 3, limit: 10 }).then(function(resul
 
 **Parameters**
 
-* `[pipelines]` {Object} - Aggregate Pipeline criteria. [Documentation](https://docs.mongodb.com/manual/core/aggregation-pipeline/)
+* `[pipelines]` {Array<Object> - Aggregate Pipeline criteria. [Documentation](https://docs.mongodb.com/manual/core/aggregation-pipeline/)
 * `[options]` {Object}
   - `[req]` {URL request} - Use `req` to set get the url for next set of results & get the url for previous set of results.
   - `[skip=0]` {Number} - Use `skip` to set skip position.
@@ -114,7 +120,7 @@ Promise fulfilled with object having properties:
 #### Skip 5 documents and return upto 10 documents
 
 ```js
-Model.aggregatePaginate({}, {req : req, skip: 5, limit: 10 }, function(err, result) {
+Model.aggregatePaginate([{ <Pipelines Query> }, ...], {req : req, skip: 5, limit: 10 }, function(err, result) {
   // result.results
   // result.count
   // result.next
@@ -125,7 +131,7 @@ Model.aggregatePaginate({}, {req : req, skip: 5, limit: 10 }, function(err, resu
 #### With promise:
 
 ```js
-Model.aggregatePaginate({}, {req : req, skip: 3, limit: 10 }).then(function(result) {
+Model.aggregatePaginate([{ <Pipelines Query> }, ...], {req : req, skip: 3, limit: 10 }).then(function(result) {
   // ...
 }).catch(err =>{
   // ...
