@@ -8,6 +8,7 @@ interface Options {
 interface PaginateOptions {
     limit?: any,
     skip?: any,
+    page? : any,
     req: any,
     is_secure?: boolean
 }
@@ -74,6 +75,9 @@ export function paginate(schema: any, opts: DefaultOptions) {
         return new Promise(async (resolve, reject) => {
             let paginateOpts: Options = {};
             if (options && options.req) {
+                if(parseInt(options.page)){
+                    options.skip = parseInt(options.page) * parseInt(options.limit);
+                }
                 paginateOpts = {
                     url: options.req.protocol + `${options.is_secure ? 's' : ''}://` + options.req.get('host') + options.req.originalUrl,
                     limit: parseInt(options.limit || defaultLimit),
@@ -132,6 +136,9 @@ export function paginate(schema: any, opts: DefaultOptions) {
             return new Promise(async (resolve, reject) => {
                 let paginateOpts: Options = {};
                 if (options && options.req) {
+                    if(parseInt(options.page)){
+                        options.skip = parseInt(options.page) * parseInt(options.limit);
+                    }
                     paginateOpts = {
                         url: options.req.protocol + `${options.is_secure ? 's' : ''}://` + options.req.get('host') + options.req.originalUrl,
                         limit: parseInt(options.limit || defaultLimit),
