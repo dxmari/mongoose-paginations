@@ -8,7 +8,7 @@ interface Options {
 interface PaginateOptions {
     limit?: any,
     skip?: any,
-    page? : any,
+    page?: any,
     req: any,
     is_secure?: boolean
 }
@@ -65,6 +65,16 @@ const getUrlParameters: any = (url: string) => {
     return vars;
 }
 
+const getDomainURL = (req: any, is_secure?: boolean) => {
+    let protocol = 'http';
+    if (is_secure) {
+        protocol = 'https'
+    } else if (req.headers.referer) {
+        protocol = req.headers.referer.split(':')[0] === 'https' ? 'https' : 'http';
+    }
+    return protocol + '://' + req.get('host') + req.originalUrl;
+}
+
 export function paginate(schema: any, opts: DefaultOptions) {
     let self: any = paginate;
     opts = Object.assign({}, (self.options || {}), opts);
@@ -75,11 +85,11 @@ export function paginate(schema: any, opts: DefaultOptions) {
         return new Promise(async (resolve, reject) => {
             let paginateOpts: Options = {};
             if (options && options.req) {
-                if(parseInt(options.page)){
+                if (parseInt(options.page)) {
                     options.skip = parseInt(options.page) * parseInt(options.limit);
                 }
                 paginateOpts = {
-                    url: options.req.protocol + `${options.is_secure ? 's' : ''}://` + options.req.get('host') + options.req.originalUrl,
+                    url: getDomainURL(options.req, options.is_secure),
                     limit: parseInt(options.limit || defaultLimit),
                     skip: parseInt(options.skip || defaultSkip),
                     count: 0
@@ -136,11 +146,11 @@ export function paginate(schema: any, opts: DefaultOptions) {
             return new Promise(async (resolve, reject) => {
                 let paginateOpts: Options = {};
                 if (options && options.req) {
-                    if(parseInt(options.page)){
+                    if (parseInt(options.page)) {
                         options.skip = parseInt(options.page) * parseInt(options.limit);
                     }
                     paginateOpts = {
-                        url: options.req.protocol + `${options.is_secure ? 's' : ''}://` + options.req.get('host') + options.req.originalUrl,
+                        url: getDomainURL(options.req, options.is_secure),
                         limit: parseInt(options.limit || defaultLimit),
                         skip: parseInt(options.skip || defaultSkip),
                         count: 0

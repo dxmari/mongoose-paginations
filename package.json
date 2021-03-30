@@ -1,11 +1,12 @@
 {
   "name": "mongoose-paginations",
-  "version": "1.0.1",
+  "version": "1.0.6",
   "description": "It is used to paginate the bulk datas.",
   "main": "lib/index.js",
   "types": "lib",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "tsc -p .",
     "build": "tsc -p ."
   },
   "keywords": [
